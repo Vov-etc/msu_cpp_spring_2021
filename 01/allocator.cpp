@@ -4,10 +4,10 @@ void Allocator::makeAllocator(size_t _maxSize) {
     if (maxSize != 0) {
         maxSize = 0;
         offset = 0;
-        delete ptr;
+        delete[] ptr;
     }
-    maxSize = _maxSize;
-    if (maxSize != 0) {
+    if (_maxSize != 0) {
+        maxSize = _maxSize;
         ptr = new char(maxSize);
     }
 }
@@ -29,5 +29,6 @@ void Allocator::reset() {
 Allocator::~Allocator() {
     maxSize = 0;
     offset = 0;
-    delete ptr;
+    delete[] ptr;
+    ptr = nullptr;
 }
