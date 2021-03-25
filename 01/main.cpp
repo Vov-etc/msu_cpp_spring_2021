@@ -1,35 +1,42 @@
 #include "allocator.h"
+#include <cassert>
 #include <iostream>
 
-void print_Allocator(Allocator &a) {
-    std::cout << "maxSize: " << a.maxSize << "    offset: " << a.offset << "    ptr: " << int(a.ptr) << std::endl;
+
+void DefaulTest() {
+    Allocator allctr;
+    allctr.makeAllocator(3);
+    assert(allctr.get_maxSize() == 3 && allctr.get_offset() == 0 && allctr.get_ptr() != nullptr );
 }
 
+void NullTest() {
+    Allocator allctr;
+    allctr.makeAllocator(0);
+    assert(allctr.get_maxSize() == 0 && allctr.get_ptr() == nullptr);
+}
+
+void LargeAllocTest() {
+    Allocator allctr;
+    allctr.makeAllocator(2);
+    char* ptr = allctr.alloc(3);
+    assert(ptr == nullptr);
+}
+
+void BunchOfAllocTest() {
+    Allocator allctr;
+    allctr.makeAllocator(5);
+    char* ptr_1 = allctr.alloc(2);
+    size_t offset = allctr.get_offset();
+    char* ptr_2 = allctr.alloc(2);
+    assert(ptr_2 == ptr_1 + offset && offset == 2);
+}
+    
+
 int main() {
-    Allocator a;
-    a.makeAllocator(0);
-    print_Allocator(a);
-    
-    a.makeAllocator(4);
-    print_Allocator(a);
-    
-    a.makeAllocator(2);
-    print_Allocator(a);
-    
-    std::cout << int(a.alloc(1)) << std::endl;
-    print_Allocator(a);
-    
-    std::cout << int(a.alloc(1)) << std::endl;
-    print_Allocator(a);
-    
-    a.reset();
-    print_Allocator(a);
-    
-    std::cout << int(a.alloc(3)) << std::endl;
-    print_Allocator(a);
-    
-    a.reset();
-    print_Allocator(a);
-    
+    DefaulTest();
+    NullTest();
+    LargeAllocTest();
+    BunchOfAllocTest();
+    std::cout << "Success!" << std::endl;
     return 0;
 }

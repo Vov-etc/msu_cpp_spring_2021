@@ -16,5 +16,4 @@ test:
 	my_prog
 
 clean:
-	@echo (Resolve-Path .\).Path
-	rm -rf *.o my_prog
+	rm -f *.o
